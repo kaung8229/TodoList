@@ -1,0 +1,28 @@
+::-webkit-scrollbar{
+  width: 4px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track{
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb{
+  border-radius: 10px;
+  background-color: var(--color-teal-500);
+  cursor: grab;
+  cursor: -webkit-grab;
+}
+::-webkit-scrollbar-thumb:hover{
+  background-color: var(--color-teal-800);
+}
+::-webkit-scrollbar-thumb:active{
+  cursor: grabbing;
+  cursor: -webkit-grabbing;
+}
+
+
+.task-text.active{
+  text-decoration: line-through;
+  color: var(--color-gray-400);
+}
