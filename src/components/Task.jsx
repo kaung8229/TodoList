@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { db } from '../app/firebase.js'
 import { doc, updateDoc } from 'firebase/firestore';
 
-function Task({task, setAddTaskShow, setEditing, setMoveTaskShow, setConfirmDelTaskShow}) {
+function Task({task, sortDone, setAddTaskShow, setEditing, setMoveTaskShow, setConfirmDelTaskShow}) {
 
     const doneHandler = async(category, id)=>{
         // console.log(category, id);
@@ -33,6 +33,13 @@ function Task({task, setAddTaskShow, setEditing, setMoveTaskShow, setConfirmDelT
     }
 
     // console.log(task);
+    task.lists.sort((x,y) => {
+        if(sortDone){
+            return y.done - x.done;
+        }else{
+            return x.done - y.done;
+        }
+    });
 
     return (
         <div>
