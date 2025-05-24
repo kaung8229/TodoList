@@ -26,3 +26,6 @@
   text-decoration: line-through;
   color: var(--color-gray-400);
 }
+.dark .task-text.active{
+  color: var(--color-gray-600);
+}

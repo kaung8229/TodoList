@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { darkmodefun } from './utils.js'
 
 function Navbar() {
-    const [darkmode, setDarkMode] = useState(false);
+    const [darkmode, setDarkMode] = useState(JSON.parse(localStorage.getItem('tododarkmode')) || false);
 
     const darkmodeHandler = ()=>{
         setDarkMode(!darkmode);
@@ -10,6 +10,8 @@ function Navbar() {
 
     useEffect(()=>{
         darkmodefun(darkmode);
+        console.log(darkmode);
+        localStorage.setItem('tododarkmode', JSON.stringify(darkmode));
     }, [darkmode])
 
     return (

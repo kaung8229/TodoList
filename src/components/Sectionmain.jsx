@@ -7,20 +7,21 @@ import Tasks from './Tasks'
 import Addtask from './Addtask';
 import Addcategory from './Addcategory';
 
-import { initcategories } from './utils.js'
 import Popupmsg from './Popupmsg.jsx';
 import Deleteconfirmcategory from './Deleteconfirmcategory.jsx';
 import Deleteconfirmtask from './Deleteconfirmtask.jsx';
+import Movetask from './Movetask.jsx';
 
 function Sectionmain() {
     const [tasks, setTasks] = useState([]);
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [editing, setEditing] = useState({data: '', status: false});
-
+    
+    const [popupShow, setPopupShow] = useState(null);
     const [addTaskShow, setAddTaskShow] = useState(null);
     const [addcategoryShow, setAddCategoryShow] = useState(null);
-    const [popupShow, setPopupShow] = useState(null);
+    const [moveTaskShow, setMoveTaskShow] = useState(false);
     const [confirmDelCateShow, setConfirmDelCateShow] = useState(null);
     const [confirmDelTaskShow, setConfirmDelTaskShow] = useState(null);
 
@@ -121,6 +122,57 @@ function Sectionmain() {
         }
     }
 
+    const movetasks = async(task, changeCategory)=>{
+        console.log(task);
+        // console.log(changeCategory);
+        const docRef = doc(db, 'taskdata', changeCategory);
+        const findtask = tasks.find(oldtask => oldtask.category === changeCategory);
+        const findoldtask = tasks.find(oldtask => oldtask.category === task.category);
+        // console.log(findtask);
+        console.log(findoldtask);
+        if(findtask){
+            // console.log("Update");
+            findtask.lists.push(task.list);
+            await updateDoc(docRef, findtask);
+
+            const filtertask = findoldtask.lists.filter((list, idx) => idx !== task.id);
+            // console.log(filtertask);
+            if(filtertask.length){
+                // console.log("update");
+                await updateDoc(doc(db, 'taskdata', task.category), {
+                    category: task.category,
+                    lists: filtertask
+                })
+            }else{
+                // console.log('delete');
+                await deleteDoc(doc(db, 'taskdata', task.category));
+            }
+        }else{
+            // console.log("Create");
+            // console.log({
+            //     category: changeCategory,
+            //     lists: [task.list]
+            // });
+            await setDoc(docRef, {
+                category: changeCategory,
+                lists: [task.list]
+            });
+
+            const filtertask = findoldtask.lists.filter((list, idx) => idx !== task.id);
+            // console.log(filtertask);
+            if(filtertask.length){
+                // console.log("update");
+                await updateDoc(doc(db, 'taskdata', task.category), {
+                    category: task.category,
+                    lists: filtertask
+                })
+            }else{
+                // console.log('delete');
+                await deleteDoc(doc(db, 'taskdata', task.category));
+            }
+        }
+    }
+
     return (
         <div className='flex flex-col sm:flex-row'>
             <Sidebar 
@@ -139,8 +191,15 @@ function Sectionmain() {
                 setAddTaskShow={setAddTaskShow} 
                 setPopupShow={setPopupShow}
                 setEditing={setEditing}
+                setMoveTaskShow={setMoveTaskShow}
                 setConfirmDelTaskShow={setConfirmDelTaskShow}
             />
+                
+            { popupShow && 
+                <Popupmsg 
+                    message={popupShow}
+                    setPopupShow={setPopupShow} 
+                /> }
 
             { addTaskShow && 
                 <Addtask 
@@ -164,12 +223,19 @@ function Sectionmain() {
                     editing={editing}
                     setEditing={setEditing}
                 /> }
-                
-            { popupShow && 
-                <Popupmsg 
-                    message={popupShow}
+
+            { moveTaskShow &&
+                <Movetask
+                    movetasks={movetasks}
+                    categories={categories} 
+                    selectedCategory={selectedCategory}
+                    moveTaskShow={moveTaskShow}
+                    setMoveTaskShow={setMoveTaskShow}
                     setPopupShow={setPopupShow} 
-                /> }
+                    editing={editing}
+                    setEditing={setEditing}
+                />  
+            }
             
             { confirmDelCateShow && 
                 <Deleteconfirmcategory 

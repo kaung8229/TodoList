@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { db } from '../app/firebase.js'
-import { doc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 
-function Task({task, setAddTaskShow, setEditing, setConfirmDelTaskShow}) {
+function Task({task, setAddTaskShow, setEditing, setMoveTaskShow, setConfirmDelTaskShow}) {
 
     const doneHandler = async(category, id)=>{
         // console.log(category, id);
@@ -12,6 +12,12 @@ function Task({task, setAddTaskShow, setEditing, setConfirmDelTaskShow}) {
         await updateDoc(doc(db, 'taskdata', category), {
             lists: task.lists
         });
+    }
+
+    const moveHandler = (category, id, list)=>{
+        setMoveTaskShow(true);
+        // console.log(category, id, list);
+        setEditing({data: {category, id, list}, status: false});
     }
 
     const editHandler = (category, id, {text, done})=>{
@@ -34,7 +40,7 @@ function Task({task, setAddTaskShow, setEditing, setConfirmDelTaskShow}) {
             <ul className='flex flex-col gap-2'>
                 {
                     task.lists.map((list, idx) => (
-                        <li key={idx} className='flex items-center bg-teal-50 border border-gray-200 rounded-md shadow-md px-3 py-2 dark:bg-zinc-900 dark:border-gray-500'>
+                        <li key={idx} className={`flex items-center ${list.done ? `bg-teal-50/30` : `bg-teal-50`} border border-gray-200 rounded-md shadow-md px-3 py-2 dark:bg-zinc-900 ${ list.done ? `dark:border-gray-800` : `dark:border-gray-500` }`}>
                             <span onClick={()=>doneHandler(task.category, idx)} className={`shrink-0 flex justify-center items-center size-4 text-white ${list.done ? `bg-teal-600` : ``} border border-gray-900 rounded-full mr-2 dark:border-white`}>
                                 { list.done ? <ion-icon name="checkmark-outline"></ion-icon> : '' }
                             </span>
@@ -42,6 +48,9 @@ function Task({task, setAddTaskShow, setEditing, setConfirmDelTaskShow}) {
                                 { list.text }
                             </p>
                             <div className='flex items-center gap-1'>
+                                <button onClick={()=>moveHandler(task.category, idx, list)} className={`${ list.done ? `hidden` : `` } size-6 flex justify-center items-center text-white bg-gray-500 hover:bg-gray-700 rounded-sm cursor-pointer p-1`}>
+                                    <ion-icon name="move-outline"></ion-icon>
+                                </button>
                                 <button onClick={()=>editHandler(task.category, idx, list)} className={`${ list.done ? `hidden` : `` } size-6 flex justify-center items-center text-white bg-gray-500 hover:bg-gray-700 rounded-sm cursor-pointer p-1`}>
                                     <ion-icon name="pencil"></ion-icon>
                                 </button>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Task from './Task';
 
-function Tasks({tasks, selectedCategory, setAddTaskShow, setPopupShow, setEditing, setConfirmDelTaskShow}) {
+function Tasks({tasks, selectedCategory, setAddTaskShow, setPopupShow, setEditing, setMoveTaskShow, setConfirmDelTaskShow}) {
     // console.log(tasks);
 
     let filterbycategory = [];
@@ -45,6 +45,7 @@ function Tasks({tasks, selectedCategory, setAddTaskShow, setPopupShow, setEditin
                             task={task} 
                             setAddTaskShow={setAddTaskShow} 
                             setEditing={setEditing}
+                            setMoveTaskShow={setMoveTaskShow}
                             setConfirmDelTaskShow={setConfirmDelTaskShow}
                         />
                     ))) : (
