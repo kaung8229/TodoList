@@ -1,11 +1,16 @@
 import React, { useState } from 'react'
 
-function Addcategory({setCategories, updatecategories, setAddCategoryShow, setPopupShow}) {
-    const [newCategory, setNewCategory] = useState('');
+function Addcategory({setCategories, updatecategories, addcategoryShow, setAddCategoryShow, setPopupShow, editing, setEditing}) {
+    const [newCategory, setNewCategory] = useState(editing.status ? editing.data : '');
     const [categoryErr, setCategoryErr] = useState('');
 
     const changeHandler = (e)=>{
         setNewCategory(e.target.value);
+    }
+
+    const cancelHandler = ()=>{
+        setAddCategoryShow(null)
+        setEditing({data: '', status: false});
     }
     
     const submitHandler = (e)=>{
@@ -13,12 +18,22 @@ function Addcategory({setCategories, updatecategories, setAddCategoryShow, setPo
         if(!newCategory.trim()){
             setCategoryErr('* This field can\'t be empty');
         }else{
-            setCategoryErr('');
-            setCategories((prevState)=> [...prevState, newCategory]);
-            updatecategories(newCategory);
-            setAddCategoryShow(false);
-            setPopupShow('Created a new cateogry');
-            // console.log("ADD SUCCESSFULLY");
+            if(!editing.status){
+                setCategoryErr('');
+                setCategories((prevState)=> [...prevState, newCategory]);
+                updatecategories(newCategory);
+                setAddCategoryShow(null);
+                setPopupShow('Created a new cateogry');
+                // console.log("ADD SUCCESSFULLY");
+            }else{
+                // console.log('editing');
+                // console.log(newCategory);
+                setCategoryErr('');
+                updatecategories({newCategory, selected: editing.data});
+                setAddCategoryShow(null);
+                setPopupShow('Successfully Updated');
+                setEditing({data: '', status: false});
+            }
         }
     }
 
@@ -27,13 +42,13 @@ function Addcategory({setCategories, updatecategories, setAddCategoryShow, setPo
             <form action='' method='' onSubmit={submitHandler} className='w-[80%] md:w-[50%] bg-teal-50 border rounded-lg p-7 dark:bg-zinc-900 dark:border-gray-500'>
                 <div className='mb-6'>
                     <label htmlFor='newcategory' className='block text-2xl font-semibold mb-3'>
-                        New category
+                        {addcategoryShow}
                     </label>
                     <input type="text" name='newcategory' id='newcategory' value={newCategory} onChange={changeHandler} className='w-full border border-gray-400 outline-0 rounded-md px-3 py-2' placeholder='Input here...' />
                     { categoryErr && <span className='text-rose-500'>{categoryErr}</span> }
                 </div>
                 <div className='grid grid-cols-2 gap-2'>
-                    <button type='reset' onClick={()=>setAddCategoryShow(false)} className='bg-gray-300 hover:bg-gray-400 rounded-sm cursor-pointer p-1 dark:bg-gray-500 dark:hover:bg-gray-600'>
+                    <button type='reset' onClick={cancelHandler} className='bg-gray-300 hover:bg-gray-400 rounded-sm cursor-pointer p-1 dark:bg-gray-500 dark:hover:bg-gray-600'>
                         Cancel
                     </button>
                     <button type='submit' className='text-teal-50 bg-teal-900 hover:bg-teal-950 rounded-sm cursor-pointer p-1 dark:bg-teal-800 dark:hover:bg-teal-900'>

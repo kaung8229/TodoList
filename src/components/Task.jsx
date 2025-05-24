@@ -38,7 +38,7 @@ function Task({task, setAddTaskShow, setEditing, setConfirmDelTaskShow}) {
                             <span onClick={()=>doneHandler(task.category, idx)} className={`shrink-0 flex justify-center items-center size-4 text-white ${list.done ? `bg-teal-600` : ``} border border-gray-900 rounded-full mr-2 dark:border-white`}>
                                 { list.done ? <ion-icon name="checkmark-outline"></ion-icon> : '' }
                             </span>
-                            <p className={`relative w-72 mr-auto transition-all duration-300 task-text ${list.done ? `active` : ``}`}>
+                            <p className={`relative mr-auto transition-all duration-300 task-text ${list.done ? `active` : ``}`}>
                                 { list.text }
                             </p>
                             <div className='flex items-center gap-1'>

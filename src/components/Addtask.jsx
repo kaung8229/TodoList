@@ -40,9 +40,9 @@ function Addtask({addnewtask, categories, selectedCategory, addTaskShow, setAddT
                 // console.log(formState);
                 setNewTaskErr('');
                 setAddTaskShow(null);
-                setPopupShow('Updated task');
                 addnewtask(formState);
                 setEditing({data: '', status: false});
+                setPopupShow('Updated task');
             }
         }
     }

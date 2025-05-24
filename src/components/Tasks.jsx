@@ -27,7 +27,7 @@ function Tasks({tasks, selectedCategory, setAddTaskShow, setPopupShow, setEditin
     // console.log(donetaskcount);
 
     return (
-        <div className='grow px-5 py-4'>
+        <div className='w-full px-5 py-4'>
             <div className='flex justify-between items-center mb-4'>
                 <div>
                     <span className='inline-block w-20'>Total : {totaltaskcount}</span>
@@ -44,7 +44,6 @@ function Tasks({tasks, selectedCategory, setAddTaskShow, setPopupShow, setEditin
                             key={task.category} 
                             task={task} 
                             setAddTaskShow={setAddTaskShow} 
-                            setPopupShow={setPopupShow}
                             setEditing={setEditing}
                             setConfirmDelTaskShow={setConfirmDelTaskShow}
                         />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { db } from '../app/firebase.js'
-import { collection, doc, addDoc, setDoc, getDoc, updateDoc, onSnapshot } from 'firebase/firestore';
+import { collection, doc, setDoc, getDoc, updateDoc, onSnapshot, deleteDoc } from 'firebase/firestore';
 
 import Sidebar from './Sidebar'
 import Tasks from './Tasks'
@@ -19,7 +19,7 @@ function Sectionmain() {
     const [editing, setEditing] = useState({data: '', status: false});
 
     const [addTaskShow, setAddTaskShow] = useState(null);
-    const [addcategoryShow, setAddCategoryShow] = useState(false);
+    const [addcategoryShow, setAddCategoryShow] = useState(null);
     const [popupShow, setPopupShow] = useState(null);
     const [confirmDelCateShow, setConfirmDelCateShow] = useState(null);
     const [confirmDelTaskShow, setConfirmDelTaskShow] = useState(null);
@@ -59,9 +59,26 @@ function Sectionmain() {
     const updatecategories = async(newCategory)=>{
         try{
             // console.log("Updated category");
-            await updateDoc(docRefcategory, {
-                lists: [...categories, newCategory]
-            });
+            if(!editing.status){
+                await updateDoc(docRefcategory, {
+                    lists: [...categories, newCategory]
+                });
+            }else{
+                // console.log("editing", newCategory);
+                const updatecategory = categories.map(cate => cate === newCategory.selected ? newCategory.newCategory : cate);
+                const changecategorytasks = tasks.find(task => task.category === newCategory.selected);
+                changecategorytasks.category = newCategory.newCategory;
+                // console.log(changecategorytasks);
+                // console.log(updatedata);
+                setCategories(updatecategory);
+                setSelectedCategory(newCategory.newCategory);
+                await updateDoc(docRefcategory, {
+                    lists: updatecategory
+                });
+                
+                await setDoc(doc(db, 'taskdata', newCategory.newCategory), changecategorytasks);
+                await deleteDoc(doc(db, 'taskdata', newCategory.selected));
+            }
         }catch(err){
             console.log("Error found while updating categories", err);
         }
@@ -103,13 +120,14 @@ function Sectionmain() {
     }
 
     return (
-        <div className='grow flex flex-col sm:flex-row'>
+        <div className='flex flex-col sm:flex-row'>
             <Sidebar 
                 tasks={tasks}
                 categories={categories} 
                 selectedCategory={selectedCategory} 
                 setSelectedCategory={setSelectedCategory} 
                 setAddCategoryShow={setAddCategoryShow} 
+                setEditing={setEditing}
                 setConfirmDelCateShow={setConfirmDelCateShow}
             />
 
@@ -138,8 +156,11 @@ function Sectionmain() {
                 <Addcategory 
                     setCategories={setCategories} 
                     updatecategories={updatecategories}
+                    addcategoryShow={addcategoryShow}
                     setAddCategoryShow={setAddCategoryShow} 
                     setPopupShow={setPopupShow} 
+                    editing={editing}
+                    setEditing={setEditing}
                 /> }
                 
             { popupShow && 

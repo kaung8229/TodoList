@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Sidebar({tasks, categories, selectedCategory, setSelectedCategory, setAddCategoryShow, setConfirmDelCateShow}) {
+function Sidebar({tasks, categories, selectedCategory, setSelectedCategory, setAddCategoryShow, setEditing, setConfirmDelCateShow}) {
 
     // console.log(tasks);
 
@@ -13,6 +13,11 @@ function Sidebar({tasks, categories, selectedCategory, setSelectedCategory, setA
         setSelectedCategory(category)
     }
 
+    const editHandler = ()=>{
+        setAddCategoryShow("Edit category");
+        setEditing({data: selectedCategory, status: true})
+    }
+
     const taskcount = tasks.reduce((init, task)=>{
         init[task.category] = task.lists.length;
         return init;
@@ -21,12 +26,20 @@ function Sidebar({tasks, categories, selectedCategory, setSelectedCategory, setA
     // console.log(taskcount);
 
     return (
-        <div className='w-[100%] sm:w-56 h-auto sm:h-[100%] border-b sm:border-b-0 sm:border-r border-gray-400 px-5 py-4 dark:border-gray-500'>
+        <div className='shrink-0 w-[100%] sm:w-60 h-auto sm:h-[100%] border-b sm:border-b-0 sm:border-r border-gray-400 px-5 py-4 dark:border-gray-500'>
             <div className='flex justify-between items-center mb-4'>
                 <strong className='text-lg'>Categories</strong>
-                <button onClick={()=>setAddCategoryShow(true)} className='size-6 flex justify-center items-center text-2xl font-bold text-teal-50 bg-teal-600 hover:ring-2 ring-teal-600 ring-offset-2 rounded-sm cursor-pointer dark:ring-offset-teal-950'>
-                    <ion-icon name="add"></ion-icon>
-                </button>
+                <div className='flex gap-2'>
+                    { selectedCategory !== 'All' && <button onClick={()=>setConfirmDelCateShow(selectedCategory)} className='size-6 flex justify-center items-center text-1xl font-bold text-teal-50 bg-rose-600 hover:ring-2 ring-rose-600 ring-offset-2 rounded-sm cursor-pointer dark:ring-offset-teal-950'>
+                        <ion-icon name="trash"></ion-icon>
+                    </button> }
+                    { selectedCategory !== 'All' && <button onClick={editHandler} className='size-6 flex justify-center items-center text-1xl font-bold text-teal-50 bg-gray-600 hover:ring-2 ring-gray-600 ring-offset-2 rounded-sm cursor-pointer dark:ring-offset-teal-950'>
+                        <ion-icon name="pencil"></ion-icon>
+                    </button> }
+                    <button onClick={()=>setAddCategoryShow("New category")} className='size-6 flex justify-center items-center text-2xl font-bold text-teal-50 bg-teal-600 hover:ring-2 ring-teal-600 ring-offset-2 rounded-sm cursor-pointer dark:ring-offset-teal-950'>
+                        <ion-icon name="add"></ion-icon>
+                    </button>
+                </div>
             </div>
             <div className='h-auto sm:h-[60vh] flex flex-row sm:flex-col gap-4 overflow-auto pb-2 sm:pb-0'>
                 <button className={selectedCategory === 'All' ? styles.active : styles.normal} onClick={()=>selectHandler('All')}>
@@ -35,15 +48,12 @@ function Sidebar({tasks, categories, selectedCategory, setSelectedCategory, setA
                 {
                     categories.map((category, idx) => (
                         <button key={idx} className={selectedCategory === category ? styles.active : styles.normal} onClick={()=>selectHandler(category)}>
-                            <span>{category}</span>
-                            <span className="inline-block group-hover:hidden before:content-['-'] sm:before:content-['']">
+                            <span className='text-nowrap'>{category}</span>
+                            <span className="before:content-['-'] sm:before:content-['']">
                                 {
                                     taskcount[category] || '0'
                                 }
                             </span>
-                            <div onClick={()=>setConfirmDelCateShow(category)} className='hidden group-hover:flex justify-center items-center text-1xl hover:text-white hover:bg-rose-500 rounded-sm p-0.5'>
-                                <ion-icon name="trash-outline"></ion-icon>
-                            </div>
                         </button>
                     ))
                 }
