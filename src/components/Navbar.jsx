@@ -10,7 +10,7 @@ function Navbar() {
 
     useEffect(()=>{
         darkmodefun(darkmode);
-        console.log(darkmode);
+        // console.log(darkmode);
         localStorage.setItem('tododarkmode', JSON.stringify(darkmode));
     }, [darkmode])
 
