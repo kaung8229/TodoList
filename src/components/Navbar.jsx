@@ -13,7 +13,7 @@ function Navbar() {
     }, [darkmode])
 
     return (
-        <div className='flex justify-between items-center border-b border-gray-300 p-5'>
+        <div className='flex justify-between items-center border-b border-gray-400 p-5 dark:border-gray-500'>
             <h3 className='text-2xl font-bold'>TodoList</h3>
             <button className='text-3xl cursor-pointer' onClick={darkmodeHandler}>
                 <ion-icon name={darkmode ? 'sunny' : 'moon'}></ion-icon>

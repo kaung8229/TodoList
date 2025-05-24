@@ -22,7 +22,7 @@ function Deleteconfirmtask({confirmDelTaskShow, setConfirmDelTaskShow, setPopupS
 
     return (
         <div className='absolute top-0 start-0 w-screen h-screen grid place-items-center bg-stone-950/75'>
-            <div className='w-[80%] md:w-[40%] bg-teal-50 border rounded-lg p-5 dark:bg-teal-950'>
+            <div className='w-[80%] md:w-[50%] bg-teal-50 border rounded-lg p-7 dark:bg-zinc-900 dark:border-gray-500'>
                 <div className='text-8xl text-center text-rose-600 mb-4'>
                     <ion-icon name="trash"></ion-icon>
                 </div>
@@ -33,7 +33,7 @@ function Deleteconfirmtask({confirmDelTaskShow, setConfirmDelTaskShow, setPopupS
                     <p className='text-gray-600 mt-2 dark:text-gray-300'>This can't be undone.</p>
                 </div>
                 <div className='grid grid-cols-2 gap-2 mt-4'>
-                    <button type='button' onClick={()=>{setConfirmDelTaskShow(null)}} className='bg-gray-300 hover:bg-gray-400 rounded-sm cursor-pointer p-1 dark:bg-gray-400 dark:hover:bg-gray-500'>
+                    <button type='button' onClick={()=>{setConfirmDelTaskShow(null)}} className='bg-gray-300 hover:bg-gray-400 rounded-sm cursor-pointer p-1 dark:bg-gray-500 dark:hover:bg-gray-600'>
                         Cancel
                     </button>
                     <button type='button' onClick={()=>deleteHandler()} className='text-teal-50 bg-rose-500 hover:bg-rose-600 rounded-sm cursor-pointer p-1'>

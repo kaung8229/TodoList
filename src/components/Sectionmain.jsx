@@ -126,6 +126,7 @@ function Sectionmain() {
                 <Addtask 
                     addnewtask={addnewtask} 
                     categories={categories} 
+                    selectedCategory={selectedCategory}
                     addTaskShow={addTaskShow}
                     setAddTaskShow={setAddTaskShow}
                     setPopupShow={setPopupShow} 

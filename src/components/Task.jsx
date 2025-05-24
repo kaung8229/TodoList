@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { db } from '../app/firebase.js'
 import { doc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 
-function Task({task, setAddTaskShow, setPopupShow, setEditing, setConfirmDelTaskShow}) {
+function Task({task, setAddTaskShow, setEditing, setConfirmDelTaskShow}) {
 
     const doneHandler = async(category, id)=>{
         // console.log(category, id);
@@ -34,8 +34,8 @@ function Task({task, setAddTaskShow, setPopupShow, setEditing, setConfirmDelTask
             <ul className='flex flex-col gap-2'>
                 {
                     task.lists.map((list, idx) => (
-                        <li key={idx} className='flex items-center border border-gray-200 rounded-md shadow-md px-3 py-2'>
-                            <span onClick={()=>doneHandler(task.category, idx)} className={`shrink-0 flex justify-center items-center size-4 text-white ${list.done ? `bg-teal-400` : ``} border border-gray-900 rounded-full mr-2 dark:border-white`}>
+                        <li key={idx} className='flex items-center bg-teal-50 border border-gray-200 rounded-md shadow-md px-3 py-2 dark:bg-zinc-900 dark:border-gray-500'>
+                            <span onClick={()=>doneHandler(task.category, idx)} className={`shrink-0 flex justify-center items-center size-4 text-white ${list.done ? `bg-teal-600` : ``} border border-gray-900 rounded-full mr-2 dark:border-white`}>
                                 { list.done ? <ion-icon name="checkmark-outline"></ion-icon> : '' }
                             </span>
                             <p className={`relative w-72 mr-auto transition-all duration-300 task-text ${list.done ? `active` : ``}`}>

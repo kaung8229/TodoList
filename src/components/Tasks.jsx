@@ -27,13 +27,13 @@ function Tasks({tasks, selectedCategory, setAddTaskShow, setPopupShow, setEditin
     // console.log(donetaskcount);
 
     return (
-        <div className='grow px-5 py-3'>
+        <div className='grow px-5 py-4'>
             <div className='flex justify-between items-center mb-4'>
                 <div>
                     <span className='inline-block w-20'>Total : {totaltaskcount}</span>
                     <span>Done : {donetaskcount}</span>
                 </div>
-                <button onClick={()=>setAddTaskShow('Add new task')} className='flex justify-center items-center font-bold text-teal-50 bg-teal-500 hover:ring-2 ring-teal-500 ring-offset-2 rounded-sm cursor-pointer px-2 py-1 dark:ring-offset-teal-950'>
+                <button onClick={()=>setAddTaskShow('New task')} className='flex justify-center items-center font-bold text-teal-50 bg-teal-600 hover:ring-2 ring-teal-600 ring-offset-2 rounded-sm cursor-pointer px-2 py-1 dark:ring-offset-teal-950'>
                     New task
                 </button>
             </div>
