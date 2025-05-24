@@ -67,7 +67,6 @@ function Sectionmain() {
                 // console.log("editing", newCategory);
                 const updatecategory = categories.map(cate => cate === newCategory.selected ? newCategory.newCategory : cate);
                 const changecategorytasks = tasks.find(task => task.category === newCategory.selected);
-                changecategorytasks.category = newCategory.newCategory;
                 // console.log(changecategorytasks);
                 // console.log(updatedata);
                 setCategories(updatecategory);
@@ -76,8 +75,11 @@ function Sectionmain() {
                     lists: updatecategory
                 });
                 
-                await setDoc(doc(db, 'taskdata', newCategory.newCategory), changecategorytasks);
-                await deleteDoc(doc(db, 'taskdata', newCategory.selected));
+                if(changecategorytasks){
+                    changecategorytasks.category = newCategory.newCategory;
+                    await setDoc(doc(db, 'taskdata', newCategory.newCategory), changecategorytasks);
+                    await deleteDoc(doc(db, 'taskdata', newCategory.selected));
+                }
             }
         }catch(err){
             console.log("Error found while updating categories", err);
