@@ -3,10 +3,19 @@ import { db } from '../app/firebase.js'
 import { doc, updateDoc } from 'firebase/firestore';
 
 function Addtask({addnewtask, categories, selectedCategory, addTaskShow, setAddTaskShow, setPopupShow, editing, setEditing}) {
+    const getdate = new Date();
+    const year = getdate.getFullYear();
+    const getmonth = getdate.getMonth()+1;
+    const month = getmonth < 10 ? '0'+getmonth : getmonth;
+    const day = getdate.getDate();
+    const defaultdate = `${year}-${month}-${day}`;
+    // console.log(defaultdate);
+
     const [formState, setFormState] = useState(editing.status ? editing.data : {
         text: '',
         done: false,
-        category: selectedCategory === 'All' ? 'General' : selectedCategory
+        category: selectedCategory === 'All' ? 'General' : selectedCategory,
+        date: defaultdate
     });
     const [newTaskErr, setNewTaskErr] = useState('');
 
@@ -24,6 +33,8 @@ function Addtask({addnewtask, categories, selectedCategory, addTaskShow, setAddT
 
     const submitHandler = (e)=>{
         e.preventDefault();
+
+        // console.log(formState);
 
         if(!formState.text.trim()){
             setNewTaskErr('* This field can\'t be empty');
@@ -70,6 +81,14 @@ function Addtask({addnewtask, categories, selectedCategory, addTaskShow, setAddT
                         }
                     </select>
                 </div>
+
+                <div className='mb-6'>
+                    <label htmlFor='date' className='block text-1xl font-semibold mb-3'>
+                        Date
+                    </label>
+                    <input type="date" name='date' id='date' value={formState.date} onChange={changeHandler} className='w-full border border-gray-400 outline-0 rounded-md px-3 py-2' placeholder='Input here...' />
+                </div>
+
                 <div className='grid grid-cols-2 gap-2'>
                     <button type='reset' onClick={cancelHandler} className='bg-gray-300 hover:bg-gray-400 rounded-sm cursor-pointer p-1 dark:bg-gray-500 dark:hover:bg-gray-600'>
                         Cancel

@@ -26,7 +26,7 @@ function Sidebar({tasks, categories, selectedCategory, setSelectedCategory, setA
     // console.log(taskcount);
 
     return (
-        <div className='shrink-0 w-[100%] sm:w-60 h-auto sm:h-[100%] border-b sm:border-b-0 sm:border-r border-gray-400 px-5 py-4 dark:border-gray-500'>
+        <div className='shrink-0 w-[100%] sm:w-60 h-auto sm:h-[100%] border-b sm:border-b-0 sm:border-r border-gray-400 px-5 py-3 sm:py-4 dark:border-gray-500'>
             <div className='flex justify-between items-center mb-4'>
                 <strong className='text-lg'>Categories</strong>
                 <div className='flex gap-2'>

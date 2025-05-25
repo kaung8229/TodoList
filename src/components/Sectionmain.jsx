@@ -3,7 +3,7 @@ import { db } from '../app/firebase.js'
 import { collection, doc, setDoc, getDoc, updateDoc, onSnapshot, deleteDoc } from 'firebase/firestore';
 
 import Sidebar from './Sidebar'
-import Tasks from './Tasks'
+import TaskContainer from './TaskContainer.jsx'
 import Addtask from './Addtask';
 import Addcategory from './Addcategory';
 
@@ -42,11 +42,12 @@ function Sectionmain() {
             onSnapshot(dbReftask, (docSnap)=>{
                 taskdata = [];
                 docSnap.forEach((doc) => {
-                    // console.log(doc.data());
+                    // console.log(doc.data().lists);
                     // console.log(doc.id);
                     taskdata.push(doc.data());
                     setTasks(taskdata);
                 })
+                // prevent from duplicating
                 if(!taskdata.length){
                     setTasks([]);
                 }
@@ -87,87 +88,85 @@ function Sectionmain() {
         }
     }
 
-    const addnewtask = async({text, done, category, id=0})=>{
-        // console.log(newtask);
-        // console.log(done);
-        // console.log(category);
+    const addnewtask = async(data)=>{
+        const {text, done, category, date, id=0} = data;
         const docRef = doc(db, 'taskdata', category);
         const newdata = {
             category: category,
-            lists: [{text, done}]
+            lists: [{text, done, date}]
         };
 
+        // decide to create or update if there is no tasks in database
         if(!tasks.length){
-            // console.log("Create");
+
             await setDoc(docRef, newdata);
+
         }else{
+            // check/decide to update or create if there is no task list with category
             if(tasks.findIndex(task => task.category === category) != -1){
-                // console.log("Update");
-                
+                // find the task with category
                 const updatedata = tasks.find(task => task.category === category);
                 
                 if(!editing.status){
-                    updatedata.lists.push({text, done});
+                    updatedata.lists.push({text, done, date});
                 }else{
-                    // console.log(updatedata.lists[id]);
                     updatedata.lists[id].text = text;
+                    updatedata.lists[id].date = date;
                 }
 
                 await updateDoc(docRef, updatedata);
 
             }else{
-                // console.log("Add");
                 await setDoc(docRef, newdata);
             }
+
         }
     }
 
     const movetasks = async(task, changeCategory)=>{
-        console.log(task);
-        // console.log(changeCategory);
         const docRef = doc(db, 'taskdata', changeCategory);
+
+        // find the task to exchange/update the task list
         const findtask = tasks.find(oldtask => oldtask.category === changeCategory);
+
+        // find the task to delete old tasks list after exchanged/updated
         const findoldtask = tasks.find(oldtask => oldtask.category === task.category);
-        // console.log(findtask);
-        console.log(findoldtask);
+
+        // decide to update or create task list if there is no data task with category
         if(findtask){
-            // console.log("Update");
+            // exchange/update the task list in the task
             findtask.lists.push(task.list);
             await updateDoc(docRef, findtask);
 
+            // filter tasks with task id
             const filtertask = findoldtask.lists.filter((list, idx) => idx !== task.id);
-            // console.log(filtertask);
+
+            // decide to delete whole data task or just task list
             if(filtertask.length){
-                // console.log("update");
                 await updateDoc(doc(db, 'taskdata', task.category), {
                     category: task.category,
                     lists: filtertask
                 })
             }else{
-                // console.log('delete');
                 await deleteDoc(doc(db, 'taskdata', task.category));
             }
+
         }else{
-            // console.log("Create");
-            // console.log({
-            //     category: changeCategory,
-            //     lists: [task.list]
-            // });
             await setDoc(docRef, {
                 category: changeCategory,
                 lists: [task.list]
             });
 
+            // filter tasks with task id
             const filtertask = findoldtask.lists.filter((list, idx) => idx !== task.id);
-            // console.log(filtertask);
+
+            // decide to delete whole data task or just data list
             if(filtertask.length){
-                // console.log("update");
                 await updateDoc(doc(db, 'taskdata', task.category), {
                     category: task.category,
                     lists: filtertask
                 })
             }else{
-                // console.log('delete');
                 await deleteDoc(doc(db, 'taskdata', task.category));
             }
         }
@@ -185,7 +184,7 @@ function Sectionmain() {
                 setConfirmDelCateShow={setConfirmDelCateShow}
             />
 
-            <Tasks 
+            <TaskContainer 
                 tasks={tasks} 
                 selectedCategory={selectedCategory}
                 setAddTaskShow={setAddTaskShow} 
@@ -262,6 +261,8 @@ export default Sectionmain
 // [
 //     {
 //         category: 'General',
-//         data: [ {text: 'text', done: false} ]
+//         data: [
+//             {text: 'text', done: false, date: '12/5/2025'}
+//         ]
 //     }
 // ]

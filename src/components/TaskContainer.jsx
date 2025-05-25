@@ -1,35 +1,32 @@
 import React, { useState } from 'react'
-import Task from './Task';
+import TaskItems from './TaskItems';
 
-function Tasks({tasks, selectedCategory, setAddTaskShow, setPopupShow, setEditing, setMoveTaskShow, setConfirmDelTaskShow}) {
-    // console.log(tasks);
+function TaskContainer({tasks, selectedCategory, setAddTaskShow, setPopupShow, setEditing, setMoveTaskShow, setConfirmDelTaskShow}) {
+    // use to sort tasks by done or undone
     const [sortDone, setSortDone] = useState(false);
 
-    let filterbycategory = [];
+    const sortHandler = ()=>{
+        setSortDone(!sortDone)
+    }
 
+    let filterbycategory = [];
+    // filter tasks by categories
     if(selectedCategory != 'All'){
         filterbycategory = tasks.filter(task => task.category === selectedCategory);
     }else{
         filterbycategory = tasks;
     }
-    // console.log(filterbycategory);
 
     const totaltaskcount = tasks.reduce((init, task)=>{
         init += parseInt(task.lists.length);
         return init;
     }, 0);
-    // console.log(totaltasks);
 
     const donetaskcount = tasks.reduce((init, task)=>{
         const filterdonetask = task.lists.filter(list => list.done === true);
         init += parseInt(filterdonetask.length);
         return init;
     }, 0);
-    // console.log(donetaskcount);
-
-    const sortHandler = ()=>{
-        setSortDone(!sortDone)
-    }
 
     return (
         <div className='w-full px-5 py-4'>
@@ -40,13 +37,14 @@ function Tasks({tasks, selectedCategory, setAddTaskShow, setPopupShow, setEditin
                     <button onClick={sortHandler} className={`text-teal-50 ${sortDone ? `bg-teal-600` : `bg-gray-400 dark:bg-gray-700`} rounded-sm cursor-pointer px-2 py-1`}>Sort by done</button>
                 </div>
                 <button onClick={()=>setAddTaskShow('New task')} className='flex justify-center items-center font-bold text-teal-50 bg-teal-600 hover:ring-2 ring-teal-600 ring-offset-2 rounded-sm cursor-pointer px-2 py-1 dark:ring-offset-teal-950'>
-                    New task
+                    New
                 </button>
             </div>
             <div className='h-[55vh] flex flex-col gap-3 overflow-auto'>
                 {
+                    // check if there is no task within category
                     filterbycategory.length ? (filterbycategory.map((task) => (
-                        <Task 
+                        <TaskItems 
                             key={task.category} 
                             task={task} 
                             sortDone={sortDone}
@@ -66,4 +64,4 @@ function Tasks({tasks, selectedCategory, setAddTaskShow, setPopupShow, setEditin
     )
 }
 
-export default Tasks
+export default TaskContainer
