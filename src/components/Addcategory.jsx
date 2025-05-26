@@ -2,11 +2,18 @@ import React, { useState } from 'react'
 
 function Addcategory({setCategories, updatecategories, addcategoryShow, setAddCategoryShow, setPopupShow, editing, setEditing}) {
     const [newCategory, setNewCategory] = useState(editing.status ? editing.data : '');
+    // const [categoryColor, setCategoryColor] = useState('');
     const [categoryErr, setCategoryErr] = useState('');
+
+    // const catecolors = ['red','']
 
     const changeHandler = (e)=>{
         setNewCategory(e.target.value);
     }
+
+    // const categorycolorHandler = (e)=>{
+    //     setCategoryColor(e.target.value);
+    // }
 
     const cancelHandler = ()=>{
         setAddCategoryShow(null)
@@ -25,6 +32,7 @@ function Addcategory({setCategories, updatecategories, addcategoryShow, setAddCa
                 setAddCategoryShow(null);
                 setPopupShow('Created a new cateogry');
                 // console.log("ADD SUCCESSFULLY");
+                // console.log(categoryColor);
             }else{
                 // console.log('editing');
                 // console.log(newCategory);
@@ -47,6 +55,12 @@ function Addcategory({setCategories, updatecategories, addcategoryShow, setAddCa
                     <input type="text" name='newcategory' id='newcategory' value={newCategory} onChange={changeHandler} className='w-full border border-gray-400 outline-0 rounded-md px-3 py-2' placeholder='Input here...' />
                     { categoryErr && <span className='text-rose-500'>{categoryErr}</span> }
                 </div>
+                {/* <div className='mb-6'>
+                    <label htmlFor='categorycolor' className='block text-2xl font-semibold mb-3'>
+                        Colors
+                    </label>
+                    <input type="color" name='categorycolor' id='categorycolor' value={categoryColor} onChange={categorycolorHandler} className='w-full border border-gray-400 outline-0 rounded-md px-3 py-2' placeholder='Input here...' />
+                </div> */}
                 <div className='grid grid-cols-2 gap-2'>
                     <button type='reset' onClick={cancelHandler} className='bg-gray-300 hover:bg-gray-400 rounded-sm cursor-pointer p-1 dark:bg-gray-500 dark:hover:bg-gray-600'>
                         Cancel

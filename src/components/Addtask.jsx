@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import { db } from '../app/firebase.js'
-import { doc, updateDoc } from 'firebase/firestore';
 
 function Addtask({addnewtask, categories, selectedCategory, addTaskShow, setAddTaskShow, setPopupShow, editing, setEditing}) {
     const getdate = new Date();
@@ -65,22 +63,26 @@ function Addtask({addnewtask, categories, selectedCategory, addTaskShow, setAddT
                     <label htmlFor='text' className='block text-2xl font-semibold mb-3'>
                         {addTaskShow}
                     </label>
-                    <input type="text" name='text' id='text' value={formState.text} onChange={changeHandler} className='w-full border border-gray-400 outline-0 rounded-md px-3 py-2' placeholder='Input here...' />
+                    <textarea name="text" id="text" value={formState.text} onChange={changeHandler} className='w-full border border-gray-400 outline-0 rounded-md px-3 py-2' placeholder='Input here...'></textarea>
                     { newTaskErr && <span className='text-rose-500'>{newTaskErr}</span> }
                 </div>
                 
-                <div className='mb-6'>
-                    <label htmlFor="category" className='block text-1xl font-semibold mb-2'>
-                        Category
-                    </label>
-                    <select name="category" id="category" value={formState.category} onChange={changeHandler} className='w-full border border-gray-400 outline-0 rounded-md px-3 py-2'>
-                        {
-                            categories.map((category, idx)=>(
-                                <option key={idx} value={category} className='dark:bg-zinc-800'>{category}</option>
-                            ))
-                        }
-                    </select>
-                </div>
+                {
+                    editing.status ? '' : (
+                    <div className='mb-6'>
+                        <label htmlFor="category" className='block text-1xl font-semibold mb-2'>
+                            Category
+                        </label>
+                        <select name="category" id="category" value={formState.category} onChange={changeHandler} className='w-full border border-gray-400 outline-0 rounded-md px-3 py-2'>
+                            {
+                                categories.map((category, idx)=>(
+                                    <option key={idx} value={category} className='dark:bg-zinc-800'>{category}</option>
+                                ))
+                            }
+                        </select>
+                    </div>
+                    )
+                }
 
                 <div className='mb-6'>
                     <label htmlFor='date' className='block text-1xl font-semibold mb-3'>
