@@ -76,7 +76,7 @@ function Addtask({addnewtask, categories, selectedCategory, addTaskShow, setAddT
                         <select name="category" id="category" value={formState.category} onChange={changeHandler} className='w-full border border-gray-400 outline-0 rounded-md px-3 py-2'>
                             {
                                 categories.map((category, idx)=>(
-                                    <option key={idx} value={category} className='dark:bg-zinc-800'>{category}</option>
+                                    <option key={idx} value={category.text} className='dark:bg-zinc-800'>{category.text}</option>
                                 ))
                             }
                         </select>

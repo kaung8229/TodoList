@@ -26,7 +26,7 @@ function Movetask({movetasks, categories, selectedCategory, moveTaskShow, setMov
     }
 
     return (
-        <div className='absolute top-0 start-0 w-screen h-screen grid place-items-center bg-stone-950/75'>
+        <div className='absolute top-0 start-0 z-20 w-screen h-screen grid place-items-center bg-stone-950/75'>
             <form action='' method='' onSubmit={submitHandler} className='w-[80%] md:w-[50%] bg-teal-50 border rounded-lg p-7 dark:bg-zinc-900 dark:border-gray-500'>
                 <div className='mb-6'>
                     <label htmlFor="category" className='block text-2xl font-semibold mb-2'>
@@ -35,7 +35,7 @@ function Movetask({movetasks, categories, selectedCategory, moveTaskShow, setMov
                     <select name="category" id="category" value={changeCategory} onChange={changeHandler} className='w-full border border-gray-400 outline-0 rounded-md px-3 py-2'>
                         {
                             categories.map((category, idx)=>(
-                                <option key={idx} value={category} className='dark:bg-zinc-800'>{category}</option>
+                                <option key={idx} value={category.text} className='dark:bg-zinc-800'>{category.text}</option>
                             ))
                         }
                     </select>

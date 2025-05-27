@@ -58,29 +58,39 @@ function Sectionmain() {
         }
     }
 
-    const updatecategories = async(newCategory)=>{
+    const updatecategories = async(categoryobj)=>{
         try{
             // console.log("Updated category");
             if(!editing.status){
                 await updateDoc(docRefcategory, {
-                    lists: [...categories, newCategory]
+                    lists: [...categories, categoryobj]
                 });
             }else{
-                // console.log("editing", newCategory);
-                const updatecategory = categories.map(cate => cate === newCategory.selected ? newCategory.newCategory : cate);
-                const changecategorytasks = tasks.find(task => task.category === newCategory.selected);
+                const {newCategory, selected, categoryColor} = categoryobj;
+                // console.log("editing/updating");
+                // console.log(newCategory, selected, categoryColor);
+                // console.log(categories);
+                const updatecategory = categories.map(category => {
+                    if(category.text === selected){
+                        return {text: newCategory, colorCode: categoryColor}
+                    }else{
+                        return category;
+                    }
+                });
+                // console.log(updatecategory);
+                const changecategorytasks = tasks.find(task => task.category === selected);
                 // console.log(changecategorytasks);
-                // console.log(updatedata);
                 setCategories(updatecategory);
-                setSelectedCategory(newCategory.newCategory);
+                setSelectedCategory(newCategory);
                 await updateDoc(docRefcategory, {
                     lists: updatecategory
                 });
+                await deleteDoc(doc(db, 'taskdata', selected));
                 
                 if(changecategorytasks){
-                    changecategorytasks.category = newCategory.newCategory;
-                    await setDoc(doc(db, 'taskdata', newCategory.newCategory), changecategorytasks);
-                    await deleteDoc(doc(db, 'taskdata', newCategory.selected));
+                    changecategorytasks.category = newCategory;
+                    changecategorytasks.colorCode = categoryColor;
+                    await setDoc(doc(db, 'taskdata', newCategory), changecategorytasks);
                 }
             }
         }catch(err){
@@ -91,16 +101,17 @@ function Sectionmain() {
     const addnewtask = async(data)=>{
         const {text, done, category, date, id=0} = data;
         const docRef = doc(db, 'taskdata', category);
+        const findcategorycolor = categories.find(cate => cate.text === category);
+        // console.log(findcategorycolor);
         const newdata = {
             category: category,
+            colorCode: findcategorycolor.colorCode,
             lists: [{text, done, date}]
         };
 
         // decide to create or update if there is no tasks in database
         if(!tasks.length){
-
             await setDoc(docRef, newdata);
-
         }else{
             // check/decide to update or create if there is no task list with category
             if(tasks.findIndex(task => task.category === category) != -1){
@@ -152,8 +163,11 @@ function Sectionmain() {
             }
 
         }else{
+            const findcategorycolor = categories.find(category => category.text === changeCategory);
+            // console.log(findcategorycolor);
             await setDoc(docRef, {
                 category: changeCategory,
+                colorCode: findcategorycolor.colorCode,
                 lists: [task.list]
             });
 
@@ -177,6 +191,7 @@ function Sectionmain() {
             <Sidebar 
                 tasks={tasks}
                 categories={categories} 
+                setCategories={setCategories}
                 selectedCategory={selectedCategory} 
                 setSelectedCategory={setSelectedCategory} 
                 setAddCategoryShow={setAddCategoryShow} 
@@ -214,6 +229,7 @@ function Sectionmain() {
                 
             { addcategoryShow && 
                 <Addcategory 
+                    categories = {categories}
                     setCategories={setCategories} 
                     updatecategories={updatecategories}
                     addcategoryShow={addcategoryShow}

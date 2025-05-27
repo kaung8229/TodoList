@@ -40,7 +40,7 @@ function TaskContainer({tasks, selectedCategory, setAddTaskShow, setPopupShow, s
                     New
                 </button>
             </div>
-            <div className='h-[55vh] flex flex-col gap-3 overflow-auto'>
+            <div className='h-[65vh] sm:h-[74vh] md:h-[60vh] flex flex-col gap-5 overflow-auto'>
                 {
                     // check if there is no task within category
                     filterbycategory.length ? (filterbycategory.map((task) => (

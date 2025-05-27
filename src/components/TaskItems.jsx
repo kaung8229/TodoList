@@ -4,7 +4,7 @@ import { db } from '../app/firebase.js'
 import { doc, updateDoc } from 'firebase/firestore';
 
 function TaskItems({task, sortDone, setAddTaskShow, setEditing, setMoveTaskShow, setConfirmDelTaskShow}) {
-
+    // console.log(task);
     const doneHandler = async(category, id)=>{
         task.lists[id].done = !task.lists[id].done;
 
@@ -42,7 +42,7 @@ function TaskItems({task, sortDone, setAddTaskShow, setEditing, setMoveTaskShow,
 
     return (
         <div>
-            <strong className='block text-center text-gray-500 mb-1'>{task.category}</strong>
+            <strong className={`block text-center text-${task.colorCode === `yellow` ? `black` : `white`} bg-${task.colorCode ? task.colorCode : `rose`}-500 rounded mb-1`}>{task.category}</strong>
             <ul className='flex flex-col gap-2'>
                 {
                     datekeys.map(key => (
