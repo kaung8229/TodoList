@@ -83,12 +83,12 @@ function Sidebar({tasks, categories, setCategories, selectedCategory, setSelecte
     // console.log(taskcount);
 
     return (
-        <div className='shrink-0 w-[100%] sm:w-60 h-auto sm:h-[100%] border-b sm:border-b-0 sm:border-r border-gray-400 px-5 py-3 sm:py-4 dark:border-gray-500'>
+        <div className='shrink-0 w-[100%] sm:w-60 h-auto sm:h-[100%] sm:border-r border-gray-400 px-5 py-3 pb-0 sm:py-4 dark:border-gray-500'>
             <div className='flex sm:hidden items-center gap-2'>
                 <button onClick={()=>setDrawerSidebar(!drawerSidebar)} className='flex justify-center items-center text-3xl text-gray-500 hover:text-gray-900 cursor-pointer dark:hover:text-gray-50'>
                     <ion-icon name="list-outline"></ion-icon>
                 </button>
-                <strong className='text-lg'>Categories</strong>
+                <strong className='text-lg font-normal'>Categories</strong>
             </div>
             <div onClick={overlayHandler} className={`${drawerSidebar ? `` : `max-sm:invisible `}max-sm:absolute top-0 start-0 max-sm:w-full max-sm:bg-zinc-900/50 transition-all z-[1] overlay`}>
                 <div className={`max-sm:w-76 max-sm:h-screen max-sm:bg-zinc-50 transition-all ${drawerSidebar ? `` : `max-sm:translate-x-[-100%]`} max-sm:px-8 max-sm:pt-24 max-sm:dark:bg-zinc-900 max-sm:border-r-0 max-sm:dark:border-r`}>

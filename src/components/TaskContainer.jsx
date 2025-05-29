@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import TaskItems from './TaskItems';
 
+import {itemmenuHandler} from './utils.js'
+
 function TaskContainer({tasks, selectedCategory, setAddTaskShow, setPopupShow, setEditing, setMoveTaskShow, setConfirmDelTaskShow}) {
     // use to sort tasks by done or undone
     const [sortDone, setSortDone] = useState(false);
@@ -29,8 +31,8 @@ function TaskContainer({tasks, selectedCategory, setAddTaskShow, setPopupShow, s
     }, 0);
 
     return (
-        <div className='w-full px-5 py-4'>
-            <div className='flex justify-between items-center mb-4'>
+        <div onClick={itemmenuHandler} className='w-full px-5 py-4'>
+            <div className='flex justify-between items-center mb-8'>
                 <div>
                     <span className='inline-block w-18'>Total : {totaltaskcount}</span>
                     <span className='inline-block w-18'>Done : {donetaskcount}</span>
@@ -40,7 +42,7 @@ function TaskContainer({tasks, selectedCategory, setAddTaskShow, setPopupShow, s
                     New
                 </button>
             </div>
-            <div className='h-[65vh] sm:h-[74vh] md:h-[60vh] flex flex-col gap-5 overflow-auto'>
+            <div className='h-[70vh] sm:h-[74vh] md:h-[60vh] flex flex-col gap-5 overflow-auto'>
                 {
                     // check if there is no task within category
                     filterbycategory.length ? (filterbycategory.map((task) => (

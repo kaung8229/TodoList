@@ -14,3 +14,20 @@ export const darkmodefun = (status)=>{
         document.documentElement.classList.remove("dark");
     }
 }
+
+
+
+export const itemmenuHandler = (e)=>{
+    const getmenus = document.querySelectorAll(".menulist");
+    const getmenubtn = e.target.closest('button');
+
+    if(getmenubtn){
+        if(getmenubtn.classList.contains('menubtn')){
+            getmenubtn.nextElementSibling?.classList.toggle("hidden");
+        }
+    }else{
+        getmenus.forEach(getmenu => {
+            getmenu?.classList.add("hidden");
+        })
+    }
+}

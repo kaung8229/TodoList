@@ -42,7 +42,7 @@ function TaskItems({task, sortDone, setAddTaskShow, setEditing, setMoveTaskShow,
 
     return (
         <div>
-            <strong className={`block text-center text-${task.colorCode === `yellow` ? `black` : `white`} bg-${task.colorCode ? task.colorCode : `rose`}-500 rounded mb-1`}>{task.category}</strong>
+            <strong className={`block text-center text-${task.colorCode === `yellow` ? `black` : `white`} bg-${task.colorCode ? task.colorCode : `rose`}-500 rounded mx-auto mb-1`}>{task.category}</strong>
             <ul className='flex flex-col gap-2'>
                 {
                     datekeys.map(key => (
