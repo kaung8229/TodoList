@@ -19,9 +19,9 @@ function TaskItem({task, sortDone, datekey, tasksbydate, doneHandler, moveHandle
                     <span onClick={()=>doneHandler(task.category, list.id)} className={`shrink-0 flex justify-center items-center size-4 text-white ${list.done ? `bg-teal-600` : ``} border border-gray-900 rounded-full mr-2 dark:border-white`}>
                         { list.done ? <ion-icon name="checkmark-outline"></ion-icon> : '' }
                     </span>
-                    <p className={`relative mr-auto transition-all duration-300 task-text ${list.done ? `active` : ``}`}>
+                    <pre className={`relative font-sans mr-auto transition-all duration-300 task-text ${list.done ? `active` : ``}`}>
                         { list.text }
-                    </p>
+                    </pre>
                     <div className='relative ml-3'>
                         <button className={`size-6 flex justify-center items-center text-white bg-gray-600 hover:bg-gray-700 rounded-sm cursor-pointer p-1 menubtn`}>
                             <ion-icon name="ellipsis-vertical"></ion-icon>
